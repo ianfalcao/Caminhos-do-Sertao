@@ -21,3 +21,18 @@ void alterarAgua(int quantidade) {
         agua += quantidade;
     }
 }
+
+
+void mostrarInventario(void) {
+    printf("\n===== INVENTARIO =====\n");
+
+    printf("Agua: %d\n", agua);
+    printf("Rapadura: %d\n", rapadura);
+    printf("Remedio: %d\n", remedio);
+    printf("Farinha: %d\n", farinha);
+
+    printf("----------------------\n");
+    printf("Moedas: %d\n", moedas);
+
+    printf("======================\n");
+}
