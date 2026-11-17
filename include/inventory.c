@@ -28,59 +28,61 @@ int alterarAgua(int quantidade) {
     return 1;
 }
 
-
-void alterarRapadura(int quantidade) {
+int alterarRapadura(int quantidade) {
     if (quantidade == 0) {
-        return;
+        return 1;
     }
 
     if (quantidade > 0 && rapadura > INT_MAX - quantidade) {
         printf("Quantidade de rapadura muito grande!\n");
-        return;
+        return 0;
     }
 
     if ((long long)rapadura + quantidade < 0) {
         printf("Rapadura insuficiente no inventario!\n");
-        return;
+        return 0;
     }
 
     rapadura += quantidade;
+    return 1;
 }
 
-void alterarRemedio(int quantidade) {
+int alterarRemedio(int quantidade) {
     if (quantidade == 0) {
-        return;
+        return 1;
     }
 
     if (quantidade > 0 && remedio > INT_MAX - quantidade) {
         printf("Quantidade de remedio muito grande!\n");
-        return;
+        return 0;
     }
 
     if ((long long)remedio + quantidade < 0) {
         printf("Remedio insuficiente no inventario!\n");
-        return;
+        return 0;
     }
 
     remedio += quantidade;
+    return 1;
 }
 
-void alterarFarinha(int quantidade) {
+int alterarFarinha(int quantidade) {
     if (quantidade == 0) {
-        return;
+        return 1;
     }
 
     if (quantidade > 0 && farinha > INT_MAX - quantidade) {
         printf("Quantidade de farinha muito grande!\n");
-        return;
+        return 0;
     }
 
     if ((long long)farinha + quantidade < 0) {
         printf("Farinha insuficiente no inventario!\n");
-        return;
+        return 0;
     }
 
     farinha += quantidade;
+    return 1;
 }
 
 void mostrarInventario(void) {
