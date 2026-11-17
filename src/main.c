@@ -14,7 +14,11 @@ int consultarRapadura(void);
 int consultarRemedio(void);
 int consultarFarinha(void);
 
+/* Funcoes de consumo do inventario */
 int consumirAgua(void);
+int consumirRapadura(void);
+int consumirRemedio(void);
+int consumirFarinha(void);
 
 int main(void) {
 
@@ -72,6 +76,31 @@ int main(void) {
     alterarFarinha(0);
 
     mostrarInventario();
+
+    /* Teste 7: Consumo */
+    printf("\n=== TESTE DE CONSUMO ===\n");
+
+    /* Adicionando itens */
+    alterarAgua(3);
+    alterarRapadura(2);
+    alterarRemedio(1);
+    alterarFarinha(3);
+
+    printf("\nAntes do consumo:\n");
+    mostrarInventario();
+
+    /* Consumindo uma unidade de cada item */
+    consumirAgua();
+    consumirRapadura();
+    consumirRemedio();
+    consumirFarinha();
+
+    printf("\nDepois do consumo:\n");
+    mostrarInventario();
+
+    /* Testando item vazio */
+    consumirRemedio();
+
 
     return 0;
 }
