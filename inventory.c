@@ -7,6 +7,12 @@ int rapadura = 0;
 int remedio = 0;
 int farinha = 0;
 
+void inicializarInventario(void) {
+    agua = 8;
+    rapadura = 3;
+    remedio = 0;
+    farinha = 0;
+}
 
 
 int alterarAgua(int quantidade) {
