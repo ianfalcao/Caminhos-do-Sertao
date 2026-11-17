@@ -71,3 +71,8 @@ void mostrarInventario(void) {
 
     printf("======================\n");
 }
+
+
+int consultarAgua(void) {
+    return agua;
+}
