@@ -8,23 +8,26 @@ int remedio = 0;
 int farinha = 0;
 
 
-void alterarAgua(int quantidade) {
+
+int alterarAgua(int quantidade) {
     if (quantidade == 0) {
-        return;
+        return 1;
     }
 
     if (quantidade > 0 && agua > INT_MAX - quantidade) {
         printf("Quantidade de agua muito grande!\n");
-        return;
+        return 0;
     }
 
     if ((long long)agua + quantidade < 0) {
         printf("Agua insuficiente no inventario!\n");
-        return;
+        return 0;
     }
 
     agua += quantidade;
+    return 1;
 }
+
 
 void alterarRapadura(int quantidade) {
     if (quantidade == 0) {
