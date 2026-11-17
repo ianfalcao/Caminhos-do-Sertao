@@ -27,17 +27,25 @@ void alterarAgua(int quantidade) {
 }
 
 
+
 void alterarRapadura(int quantidade) {
     if (quantidade == 0) {
         return;
     }
 
-    if (rapadura + quantidade < 0) {
-        printf("Rapadura insuficiente no inventario!\n");
-    } else {
-        rapadura += quantidade;
+    if (quantidade > 0 && rapadura > INT_MAX - quantidade) {
+        printf("Quantidade de rapadura muito grande!\n");
+        return;
     }
+
+    if ((long long)rapadura + quantidade < 0) {
+        printf("Rapadura insuficiente no inventario!\n");
+        return;
+    }
+
+    rapadura += quantidade;
 }
+
 
 
 void alterarRemedio(int quantidade) {
