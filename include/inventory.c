@@ -95,3 +95,15 @@ void mostrarInventario(void) {
 int consultarAgua(void) {
     return agua;
 }
+
+int consultarRapadura(void) {
+    return rapadura;
+}
+
+int consultarRemedio(void) {
+    return remedio;
+}
+
+int consultarFarinha(void) {
+    return farinha;
+}
