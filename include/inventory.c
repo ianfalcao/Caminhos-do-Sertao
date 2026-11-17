@@ -96,6 +96,18 @@ int consultarAgua(void) {
     return agua;
 }
 
+int consultarRapadura(void) {
+    return rapadura;
+}
+
+int consultarRemedio(void) {
+    return remedio;
+}
+
+int consultarFarinha(void) {
+    return farinha;
+}
+
 int consumirAgua(void) {
     if (agua <= 0) {
         printf("Voce nao possui agua!\n");
@@ -108,15 +120,38 @@ int consumirAgua(void) {
     return 1;
 }
 
+int consumirRapadura(void) {
+    if (rapadura <= 0) {
+        printf("Voce nao possui rapadura!\n");
+        return 0;
+    }
 
-int consultarRapadura(void) {
-    return rapadura;
+    alterarRapadura(-1);
+
+    printf("Voce consumiu uma rapadura!\n");
+    return 1;
 }
 
-int consultarRemedio(void) {
-    return remedio;
+int consumirRemedio(void) {
+    if (remedio <= 0) {
+        printf("Voce nao possui remedio!\n");
+        return 0;
+    }
+
+    alterarRemedio(-1);
+
+    printf("Voce utilizou um remedio!\n");
+    return 1;
 }
 
-int consultarFarinha(void) {
-    return farinha;
+int consumirFarinha(void) {
+    if (farinha <= 0) {
+        printf("Voce nao possui farinha!\n");
+        return 0;
+    }
+
+    alterarFarinha(-1);
+
+    printf("Voce consumiu uma porcao de farinha!\n");
+    return 1;
 }

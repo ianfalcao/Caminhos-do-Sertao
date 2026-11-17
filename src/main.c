@@ -14,6 +14,8 @@ int consultarRapadura(void);
 int consultarRemedio(void);
 int consultarFarinha(void);
 
+int consumirAgua(void);
+
 int main(void) {
 
     printf("=== TESTE DO INVENTARIO ===\n");
@@ -62,6 +64,7 @@ int main(void) {
 
     /* Teste 6: Alteracao com zero */
     printf("\nTeste 6 - Alterando com zero:\n");
+    alterarAgua(2);
 
     alterarAgua(0);
     alterarRapadura(0);
