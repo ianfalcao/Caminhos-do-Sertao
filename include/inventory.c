@@ -35,6 +35,18 @@ void alterarRapadura(int quantidade) {
 }
 
 
+void alterarRemedio(int quantidade) {
+    if (quantidade == 0) {
+        return;
+    }
+
+    if (remedio + quantidade < 0) {
+        printf("Remedio insuficiente no inventario!\n");
+    } else {
+        remedio += quantidade;
+    }
+}
+
 
 void mostrarInventario(void) {
     printf("\n===== INVENTARIO =====\n");
