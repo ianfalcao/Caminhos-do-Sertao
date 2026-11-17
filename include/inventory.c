@@ -22,6 +22,19 @@ void alterarAgua(int quantidade) {
     }
 }
 
+void alterarRapadura(int quantidade) {
+    if (quantidade == 0) {
+        return;
+    }
+
+    if (rapadura + quantidade < 0) {
+        printf("Rapadura insuficiente no inventario!\n");
+    } else {
+        rapadura += quantidade;
+    }
+}
+
+
 
 void mostrarInventario(void) {
     printf("\n===== INVENTARIO =====\n");
@@ -30,9 +43,6 @@ void mostrarInventario(void) {
     printf("Rapadura: %d\n", rapadura);
     printf("Remedio: %d\n", remedio);
     printf("Farinha: %d\n", farinha);
-
-    printf("----------------------\n");
-    printf("Moedas: %d\n", moedas);
 
     printf("======================\n");
 }
