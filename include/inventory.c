@@ -26,8 +26,6 @@ void alterarAgua(int quantidade) {
     agua += quantidade;
 }
 
-
-
 void alterarRapadura(int quantidade) {
     if (quantidade == 0) {
         return;
@@ -46,33 +44,41 @@ void alterarRapadura(int quantidade) {
     rapadura += quantidade;
 }
 
-
-
 void alterarRemedio(int quantidade) {
     if (quantidade == 0) {
         return;
     }
 
-    if (remedio + quantidade < 0) {
-        printf("Remedio insuficiente no inventario!\n");
-    } else {
-        remedio += quantidade;
+    if (quantidade > 0 && remedio > INT_MAX - quantidade) {
+        printf("Quantidade de remedio muito grande!\n");
+        return;
     }
-}
 
+    if ((long long)remedio + quantidade < 0) {
+        printf("Remedio insuficiente no inventario!\n");
+        return;
+    }
+
+    remedio += quantidade;
+}
 
 void alterarFarinha(int quantidade) {
     if (quantidade == 0) {
         return;
     }
 
-    if (quantidade < 0 && farinha < -quantidade) {
-        printf("Farinha insuficiente no inventario!\n");
-    } else {
-        farinha += quantidade;
+    if (quantidade > 0 && farinha > INT_MAX - quantidade) {
+        printf("Quantidade de farinha muito grande!\n");
+        return;
     }
-}
 
+    if ((long long)farinha + quantidade < 0) {
+        printf("Farinha insuficiente no inventario!\n");
+        return;
+    }
+
+    farinha += quantidade;
+}
 
 void mostrarInventario(void) {
     printf("\n===== INVENTARIO =====\n");
