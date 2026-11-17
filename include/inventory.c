@@ -48,6 +48,19 @@ void alterarRemedio(int quantidade) {
 }
 
 
+void alterarFarinha(int quantidade) {
+    if (quantidade == 0) {
+        return;
+    }
+
+    if (quantidade < 0 && farinha < -quantidade) {
+        printf("Farinha insuficiente no inventario!\n");
+    } else {
+        farinha += quantidade;
+    }
+}
+
+
 void mostrarInventario(void) {
     printf("\n===== INVENTARIO =====\n");
 
