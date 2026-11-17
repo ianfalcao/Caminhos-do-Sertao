@@ -10,7 +10,7 @@ int farinha = 0;
 void inicializarInventario(void) {
     agua = 8;
     rapadura = 3;
-    remedio = 0;
+    remedio = 1;
     farinha = 0;
 }
 
