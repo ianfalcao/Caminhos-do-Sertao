@@ -96,6 +96,19 @@ int consultarAgua(void) {
     return agua;
 }
 
+int consumirAgua(void) {
+    if (agua <= 0) {
+        printf("Voce nao possui agua!\n");
+        return 0;
+    }
+
+    alterarAgua(-1);
+
+    printf("Voce consumiu uma unidade de agua!\n");
+    return 1;
+}
+
+
 int consultarRapadura(void) {
     return rapadura;
 }
