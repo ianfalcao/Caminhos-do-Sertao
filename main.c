@@ -3,6 +3,7 @@
 #include <time.h>
 
 void inicializarInventario(void);
+void iniciarCombate(int *vidaJogador);
 
 int alterarAgua(int quantidade);
 int alterarRapadura(int quantidade);
@@ -59,10 +60,23 @@ void jogar(void)
                vida, consultarAgua(), consultarRapadura());
         printf("1 - Andar\n2 - Descansar na sombra\n3 - Comer rapadura\nEscolha: ");
 
-        if (scanf("%d", &op) != 1)
+        int leitura = scanf("%d", &op);
+
+        if (leitura == EOF)
         {
-            while (getchar() != '\n')
-                ;
+            printf("\nEntrada encerrada. Voltando ao menu.\n");
+            return;
+        }
+
+        if (leitura != 1)
+        {
+            int caractere;
+
+            while ((caractere = getchar()) != '\n' && caractere != EOF)
+            {
+            }
+
+            printf("Digite uma opcao numerica.\n");
             continue;
         }
 
@@ -96,8 +110,12 @@ void jogar(void)
             }
             else if (evento == 1)
             {
-                vida -= 2;
-                printf("Azar! Uma cobra jararaca te picou! (-2 vida)\n");
+                iniciarCombate(&vida);
+
+                if (vida <= 0)
+                {
+                    break;
+                }
             }
             else if (evento == 2)
             {
@@ -159,7 +177,8 @@ void jogar(void)
         }
 
         // Verificacao de desidratacao
-        if (consultarAgua() <= 0) {
+        if (consultarAgua() <= 0)
+        {
             vida -= 3;
             printf("VOCE ESTA DESIDRATADO! A sede consome suas forcas (-3 vida)\n");
         }
@@ -189,10 +208,22 @@ int main()
     do
     {
         mostrarMenu();
-        if (scanf("%d", &opcao) != 1)
+        int leitura = scanf("%d", &opcao);
+
+        if (leitura == EOF)
         {
-            while (getchar() != '\n')
-                ;
+            printf("\nEntrada encerrada. Ate logo!\n");
+            break;
+        }
+
+        if (leitura != 1)
+        {
+            int caractere;
+
+            while ((caractere = getchar()) != '\n' && caractere != EOF)
+            {
+            }
+
             opcao = 0;
         }
         switch (opcao)
