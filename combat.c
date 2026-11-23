@@ -4,12 +4,13 @@
 /* Funcao implementada em main.c. */
 void limparTela(void);
 
-/* Funcoes implementadas em inventory.c */
+/* Funcoes implementadas em inventory.c. */
 int consumirRemedio(void);
 int alterarAgua(int quantidade);
 int alterarRapadura(int quantidade);
 int alterarRemedio(int quantidade);
 
+/* O ponteiro permite alterar a vida original do jogador. */
 void iniciarCombate(int *vidaJogador)
 {
     int vidaInimigo = 5;
@@ -17,6 +18,7 @@ void iniciarCombate(int *vidaJogador)
 
     printf("\nUm salteador bloqueia sua passagem!\n");
 
+    /* O combate continua enquanto os dois estiverem vivos. */
     while (*vidaJogador > 0 && vidaInimigo > 0)
     {
         printf("\n=== COMBATE ===\n");
@@ -26,6 +28,7 @@ void iniciarCombate(int *vidaJogador)
 
         int leitura = scanf("%d", &opcao);
 
+        /* Finaliza a partida se a entrada for encerrada. */
         if (leitura == EOF)
         {
             *vidaJogador = 0;
@@ -33,9 +36,11 @@ void iniciarCombate(int *vidaJogador)
             return;
         }
 
+        /* Descarta texto invalido e pede outra escolha. */
         if (leitura != 1)
         {
             int caractere;
+
             while ((caractere = getchar()) != '\n' && caractere != EOF)
             {
             }
@@ -43,11 +48,12 @@ void iniciarCombate(int *vidaJogador)
             printf("Digite uma opcao numerica.\n");
             continue;
         }
-        
+
         limparTela();
 
         if (opcao == 1)
         {
+            /* Sorteia um ataque de 1 a 3 de dano. */
             int dano = 1 + rand() % 3;
             vidaInimigo -= dano;
 
@@ -60,6 +66,7 @@ void iniciarCombate(int *vidaJogador)
         }
         else if (opcao == 2)
         {
+            /* Vida cheia ou falta de remedio nao gastam o turno. */
             if (*vidaJogador >= 10)
             {
                 printf("Sua vida ja esta cheia!\n");
@@ -71,6 +78,7 @@ void iniciarCombate(int *vidaJogador)
                 continue;
             }
 
+            /* Recupera ate 3 pontos, sem ultrapassar 10 de vida. */
             int recuperacao = 10 - *vidaJogador;
 
             if (recuperacao > 3)
@@ -83,6 +91,7 @@ void iniciarCombate(int *vidaJogador)
         }
         else if (opcao == 3)
         {
+            /* A fuga tem 50% de chance e nao entrega recompensa. */
             if (rand() % 2 == 0)
             {
                 printf("Voce conseguiu fugir!\n");
@@ -97,7 +106,7 @@ void iniciarCombate(int *vidaJogador)
             continue;
         }
 
-        /* O inimigo so ataca se ainda estiver vivo. */
+        /* Se sobreviver, o inimigo contra-ataca com 1 ou 2 de dano. */
         if (vidaInimigo > 0)
         {
             int dano = 1 + rand() % 2;
@@ -112,6 +121,7 @@ void iniciarCombate(int *vidaJogador)
         }
     }
 
+    /* A derrota encerra a funcao antes do sorteio de recompensa. */
     if (*vidaJogador <= 0)
     {
         printf("\nVoce foi derrotado pelo salteador.\n");
@@ -120,7 +130,7 @@ void iniciarCombate(int *vidaJogador)
 
     printf("\nVoce derrotou o salteador!\n");
 
-    /* Sorteia exatamente uma recompensa. */
+    /* Sorteia entre agua, rapadura e remedio. */
     int recompensa = rand() % 3;
     int recebeu;
 
@@ -152,6 +162,7 @@ void iniciarCombate(int *vidaJogador)
         }
     }
 
+    /* O retorno da funcao informa se o item entrou no inventario. */
     if (!recebeu)
     {
         printf("Seu estoque desse item esta cheio.\n");
