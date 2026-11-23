@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 
-/* Limpa a tela do terminal e leva o cursor ao inicio. */
+/* Limpa a tela e posiciona o cursor no inicio. */
 void limparTela(void)
 {
     printf("\033[2J\033[H");
     fflush(stdout);
 }
 
-/* Funcoes implementadas em mapa.c */
+/* Funcoes disponiveis nos outros arquivos do projeto. */
 void inicializarMapa(void);
 void mostrarMapa(void);
 int moverJogador(int direcao);
@@ -18,24 +18,22 @@ int localAtualFoiVisitado(void);
 void marcarLocalAtualVisitado(void);
 int chegouAoDestino(void);
 
-/* Necessaria para a recompensa do armazem. */
 int alterarRemedio(int quantidade);
-
 void inicializarInventario(void);
 void iniciarCombate(int *vidaJogador);
-
 int alterarAgua(int quantidade);
 int alterarRapadura(int quantidade);
-
 int consultarAgua(void);
 int consultarRapadura(void);
 
+/* Funcao para mostrar o Menu do game */
 void mostrarMenu(void)
 {
     printf("\n=== CAMINHOS DO SERTAO ===\n");
     printf("1 - Novo Jogo\n2 - Como Jogar\n3 - Sair\nEscolha: ");
 }
 
+/* Funcao explicativa de como jogar */
 void comoJogar(void)
 {
     printf("\n--- COMO JOGAR ---\n");
@@ -50,12 +48,14 @@ void comoJogar(void)
     printf("- Chegue ao destino com vida para vencer.\n");
 }
 
-/* Funcao implementada em jogo.c para iniciar o jogo*/
+/* Declara a funcao de jogo, implementada em jogo.c. */
 void jogar(void);
 
-int main()
+int main(void)
 {
     int opcao;
+
+    /* Inicializa os sorteios usando o horario atual. */
     srand(time(NULL));
 
     do
@@ -63,12 +63,14 @@ int main()
         mostrarMenu();
         int leitura = scanf("%d", &opcao);
 
+        /* Encerra o programa se a entrada for fechada. */
         if (leitura == EOF)
         {
             printf("\nEntrada encerrada. Ate logo!\n");
             break;
         }
 
+        /* Descarta a entrada invalida quando nao for um numero. */
         if (leitura != 1)
         {
             int caractere;
@@ -79,8 +81,10 @@ int main()
 
             opcao = 0;
         }
+
         limparTela();
 
+        /* Executa a acao correspondente a opcao escolhida. */
         switch (opcao)
         {
         case 1:
@@ -95,7 +99,8 @@ int main()
         default:
             printf("\nOpcao invalida!\n");
         }
-    } while (opcao != 3);
+
+    } while (opcao != 3); /* Repete o menu ate escolher sair. */
 
     return 0;
 }
