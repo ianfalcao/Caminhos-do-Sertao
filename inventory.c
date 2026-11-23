@@ -1,12 +1,13 @@
 #include <stdio.h>
-#include <limits.h>
+#include <limits.h> /* Define INT_MAX, o maior valor do tipo int. */
 
-/* Quantidade de itens do jogador */
+/* Quantidade de cada item no inventario do jogador. */
 int agua = 0;
 int rapadura = 0;
 int remedio = 0;
 int farinha = 0;
 
+/* Reinicia os itens com os valores iniciais de cada partida. */
 void inicializarInventario(void) {
     agua = 8;
     rapadura = 3;
@@ -14,17 +15,23 @@ void inicializarInventario(void) {
     farinha = 0;
 }
 
-
+/*
+ * As funcoes alterar adicionam itens com valores positivos
+ * e removem com valores negativos.
+ * Retornam 1 em caso de sucesso e 0 quando a alteracao falha.
+ */
 int alterarAgua(int quantidade) {
     if (quantidade == 0) {
         return 1;
     }
 
+    /* Impede que a soma ultrapasse o limite do tipo int. */
     if (quantidade > 0 && agua > INT_MAX - quantidade) {
         printf("Quantidade de agua muito grande!\n");
         return 0;
     }
 
+    /* Usa long long na verificacao para evitar estouro da soma. */
     if ((long long)agua + quantidade < 0) {
         printf("Agua insuficiente no inventario!\n");
         return 0;
@@ -91,6 +98,7 @@ int alterarFarinha(int quantidade) {
     return 1;
 }
 
+/* Mostra a quantidade atual de todos os itens. */
 void mostrarInventario(void) {
     printf("\n===== INVENTARIO =====\n");
 
@@ -102,7 +110,7 @@ void mostrarInventario(void) {
     printf("======================\n");
 }
 
-
+/* Consultam o estoque sem alterar as quantidades. */
 int consultarAgua(void) {
     return agua;
 }
@@ -119,6 +127,11 @@ int consultarFarinha(void) {
     return farinha;
 }
 
+/*
+ * As funcoes consumir removem uma unidade se houver estoque.
+ * Retornam 1 se o item foi consumido e 0 se estiver em falta.
+ * Os efeitos na vida do jogador sao tratados fora deste arquivo.
+ */
 int consumirAgua(void) {
     if (agua <= 0) {
         printf("Voce nao possui agua!\n");
