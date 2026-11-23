@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <time.h>
 
+/* Limpa a tela do terminal e leva o cursor ao inicio. */
+void limparTela(void)
+{
+    printf("\033[2J\033[H");
+    fflush(stdout);
+}
+
 /* Funcoes implementadas em mapa.c */
 void inicializarMapa(void);
 void mostrarMapa(void);
@@ -109,6 +116,7 @@ void jogar(void)
             continue;
         }
 
+        limparTela();
         /* O clima determina o custo de agua do movimento. */
         int consumoAgua = clima + 1;
 
@@ -139,6 +147,8 @@ void jogar(void)
                 printf("Digite uma direcao numerica.\n");
                 continue;
             }
+
+            limparTela();
 
             /*
              * Movimento invalido nao gasta agua nem avanca o dia.
@@ -319,6 +329,8 @@ int main()
 
             opcao = 0;
         }
+        limparTela();
+
         switch (opcao)
         {
         case 1:

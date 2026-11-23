@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* Funcao implementada em main.c. */
+void limparTela(void);
+
 /* Funcoes implementadas em inventory.c */
 int consumirRemedio(void);
 int alterarAgua(int quantidade);
@@ -40,6 +43,8 @@ void iniciarCombate(int *vidaJogador)
             printf("Digite uma opcao numerica.\n");
             continue;
         }
+        
+        limparTela();
 
         if (opcao == 1)
         {
