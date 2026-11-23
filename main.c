@@ -170,7 +170,24 @@ void jogar(void)
 
                 if (local == 0)
                 {
-                    printf("Voce segue por uma estrada tranquila.\n");
+                    /*
+                     * Cada estrada tem 30% de chance de encontro
+                     * na primeira visita. O restante e caminhada tranquila.
+                     */
+                    if (rand() % 100 < 30)
+                    {
+                        printf("Um salteador apareceu na estrada!\n");
+                        iniciarCombate(&vida);
+
+                        if (vida <= 0)
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        printf("Voce segue por uma estrada tranquila.\n");
+                    }
                 }
                 else if (local == 1)
                 {
