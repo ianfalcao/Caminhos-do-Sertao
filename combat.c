@@ -1,14 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-/* Funcao implementada em main.c. */
-void limparTela(void);
-
-/* Funcoes implementadas em inventory.c. */
-int consumirRemedio(void);
-int alterarAgua(int quantidade);
-int alterarRapadura(int quantidade);
-int alterarRemedio(int quantidade);
+#include "ui.h"
+#include "jogo.h"
 
 /* O ponteiro permite alterar a vida original do jogador. */
 void iniciarCombate(int *vidaJogador)
@@ -21,9 +14,13 @@ void iniciarCombate(int *vidaJogador)
     /* O combate continua enquanto os dois estiverem vivos. */
     while (*vidaJogador > 0 && vidaInimigo > 0)
     {
-        printf("\n=== COMBATE ===\n");
-        printf("Sua vida: %d/10 | Vida do salteador: %d/5\n",
-               *vidaJogador, vidaInimigo);
+        printf("\n" COR_NEGRITO COR_AMARELO "=== COMBATE ===" COR_RESET "\n");
+        printf("Voce:      ");
+        mostrarBarra(*vidaJogador, 10, 10, COR_VERDE);
+        printf(" %d/10\n", *vidaJogador);
+        printf("Salteador: ");
+        mostrarBarra(vidaInimigo, 5, 10, COR_VERMELHO);
+        printf(" %d/5\n", vidaInimigo);
         printf("1 - Atacar\n2 - Usar remedio\n3 - Fugir\nEscolha: ");
 
         int leitura = scanf("%d", &opcao);
@@ -62,7 +59,7 @@ void iniciarCombate(int *vidaJogador)
                 vidaInimigo = 0;
             }
 
-            printf("Voce causou %d de dano!\n", dano);
+            printf(COR_VERDE "Voce causou %d de dano!" COR_RESET "\n", dano);
         }
         else if (opcao == 2)
         {
@@ -117,18 +114,18 @@ void iniciarCombate(int *vidaJogador)
                 *vidaJogador = 0;
             }
 
-            printf("O salteador causou %d de dano!\n", dano);
+            printf(COR_VERMELHO "O salteador causou %d de dano!" COR_RESET "\n", dano);
         }
     }
 
     /* A derrota encerra a funcao antes do sorteio de recompensa. */
     if (*vidaJogador <= 0)
     {
-        printf("\nVoce foi derrotado pelo salteador.\n");
+        printf("\n" COR_NEGRITO COR_VERMELHO "Voce foi derrotado pelo salteador." COR_RESET "\n");
         return;
     }
 
-    printf("\nVoce derrotou o salteador!\n");
+    printf("\n" COR_NEGRITO COR_VERDE "Voce derrotou o salteador!" COR_RESET "\n");
 
     /* Sorteia entre agua, rapadura e remedio. */
     int recompensa = rand() % 3;
@@ -162,9 +159,9 @@ void iniciarCombate(int *vidaJogador)
         }
     }
 
-    /* O retorno da funcao informa se o item entrou no inventario. */
+    /* A funcao alterar ja informou o motivo da falha, se houve. */
     if (!recebeu)
     {
-        printf("Seu estoque desse item esta cheio.\n");
+        printf(COR_DIM "Nao foi possivel guardar o item." COR_RESET "\n");
     }
 }

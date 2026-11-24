@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "ui.h"
 
 /*
  * Cada posicao da matriz representa um local do sertao.
@@ -68,7 +69,7 @@ void inicializarMapa(void)
 /* Exibe uma representacao do mapa no terminal. */
 void mostrarMapa(void)
 {
-    printf("\n=== MAPA DO SERTAO ===\n");
+    printf("\n" COR_NEGRITO COR_AMARELO "=== MAPA DO SERTAO ===" COR_RESET "\n");
 
     for (int linha = 0; linha < 5; linha++)
     {
@@ -100,14 +101,26 @@ void mostrarMapa(void)
                 simbolo = '?';
             }
 
-            printf("[%c] ", simbolo);
+            /* Cor de cada simbolo: jogador, destino, explorado e desconhecido. */
+            const char *cor = COR_DIM;
+
+            if (simbolo == 'J')
+            {
+                cor = COR_NEGRITO COR_AMARELO;
+            }
+            else if (simbolo == 'D')
+            {
+                cor = COR_NEGRITO COR_VERMELHO;
+            }
+
+            printf("[%s%c" COR_RESET "] ", cor, simbolo);
         }
         /* Depois de exibir uma linha inteira, passa para a proxima. */
         printf("\n");
     }
 
-    printf("J = jogador | D = destino\n");
-    printf(". = explorado | ? = desconhecido\n");
+    printf(COR_AMARELO "J" COR_RESET " = jogador | " COR_VERMELHO "D" COR_RESET " = destino\n");
+    printf(COR_DIM ". = explorado | ? = desconhecido" COR_RESET "\n");
 }
 
 /* 1 = norte, 2 = sul, 3 = leste, 4 = oeste.

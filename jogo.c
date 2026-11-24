@@ -1,28 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include "ui.h"
+#include "jogo.h"
 
-/* Funcoes implementadas em main.c */
-void limparTela(void);
-
-/* Funcoes implementadas em inventory.c */
-void inicializarInventario(void);
-int alterarAgua(int quantidade);
-int alterarRapadura(int quantidade);
-int alterarRemedio(int quantidade);
-int consultarAgua(void);
-int consultarRapadura(void);
-
-/* Funcao implementada em combat.c */
-void iniciarCombate(int *vidaJogador);
-
-/* Funcoes implementadas em mapa.c */
-void inicializarMapa(void);
-void mostrarMapa(void);
-int moverJogador(int direcao);
-int consultarLocalAtual(void);
-int localAtualFoiVisitado(void);
-void marcarLocalAtualVisitado(void);
-int chegouAoDestino(void);
+/* Converte W/A/S/D (ou 1 a 4) na direcao usada por moverJogador. Retorna 0 se nao for valida. */
+static int direcaoDeTecla(char tecla)
+{
+    switch (tecla)
+    {
+    case '1':
+    case 'w':
+    case 'W':
+        return 1;
+    case '2':
+    case 's':
+    case 'S':
+        return 2;
+    case '3':
+    case 'd':
+    case 'D':
+        return 3;
+    case '4':
+    case 'a':
+    case 'A':
+        return 4;
+    default:
+        return 0;
+    }
+}
 
 void jogar(void)
 {
@@ -52,24 +58,36 @@ void jogar(void)
 
         mostrarMapa();
 
-        printf("\nDia %d | Clima: ", dia);
+        mostrarSeparador();
+        printf(COR_NEGRITO "Dia %d" COR_RESET " | Clima: ", dia);
 
         if (clima == 0)
-            printf("Ameno\n");
+            printf(COR_VERDE "Ameno" COR_RESET "\n");
         else if (clima == 1)
-            printf("Sol forte\n");
+            printf(COR_AMARELO "Sol forte" COR_RESET "\n");
         else
-            printf("Seca severa\n");
+            printf(COR_VERMELHO "Seca severa" COR_RESET "\n");
 
-        printf("Vida: %d/10 | Agua: %d | Rapadura: %d\n",
-               vida, consultarAgua(), consultarRapadura());
+        printf("Vida:      ");
+        mostrarBarra(vida, 10, 10, COR_VERMELHO);
+        printf(" %d/10\n", vida);
+
+        printf("Agua: %d | Rapadura: %d | Remedio: %d\n",
+               consultarAgua(), consultarRapadura(), consultarRemedio());
+
+        char tecla = 0;
 
         printf("1 - Explorar o mapa\n");
         printf("2 - Descansar na sombra\n");
         printf("3 - Comer rapadura\n");
-        printf("Escolha: ");
+        printf("W/A/S/D - Andar direto\n");
+        printf("\n" COR_AMARELO COR_NEGRITO);
+        printf("============================\n");
+        printf(" Escolha: \n"COR_RESET);
 
-        int leitura = scanf("%d", &op);
+        /* Le um caractere, ignorando espacos e quebras de linha. */
+        int leitura = scanf(" %c", &tecla);
+        int direcaoRapida = 0;
 
         if (leitura == EOF)
         {
@@ -77,17 +95,19 @@ void jogar(void)
             return;
         }
 
-        if (leitura != 1)
+        /* WASD anda direto; 1, 2 e 3 escolhem a acao do menu. */
+        if (isalpha((unsigned char)tecla) && direcaoDeTecla(tecla) != 0)
         {
-            int caractere;
-
-            while ((caractere = getchar()) != '\n' &&
-                   caractere != EOF)
-            {
-            }
-
-            printf("Digite uma opcao numerica.\n");
-            continue;
+            op = 1;
+            direcaoRapida = direcaoDeTecla(tecla);
+        }
+        else if (tecla >= '1' && tecla <= '3')
+        {
+            op = tecla - '0';
+        }
+        else
+        {
+            op = 0;
         }
 
         limparTela();
@@ -96,30 +116,29 @@ void jogar(void)
 
         if (op == 1)
         {
-            int direcao;
+            int direcao = direcaoRapida;
 
-            printf("\n1 - Norte\n2 - Sul\n");
-            printf("3 - Leste\n4 - Oeste\nDirecao: ");
-
-            leitura = scanf("%d", &direcao);
-
-            if (leitura == EOF)
+            /* Sem tecla WASD no menu principal, pergunta a direcao. */
+            if (direcaoRapida == 0)
             {
-                printf("\nEntrada encerrada. Voltando ao menu.\n");
-                return;
-            }
+                printf("\n1 (W) - Norte\n2 (S) - Sul\n");
+                printf("3 (D) - Leste\n4 (A) - Oeste\nDirecao: ");
 
-            if (leitura != 1)
-            {
-                int caractere;
+                leitura = scanf(" %c", &tecla);
 
-                while ((caractere = getchar()) != '\n' &&
-                       caractere != EOF)
+                if (leitura == EOF)
                 {
+                    printf("\nEntrada encerrada. Voltando ao menu.\n");
+                    return;
                 }
 
-                printf("Digite uma direcao numerica.\n");
-                continue;
+                direcao = direcaoDeTecla(tecla);
+
+                if (direcao == 0)
+                {
+                    printf("Use W, A, S, D ou 1 a 4.\n");
+                    continue;
+                }
             }
 
             limparTela();
@@ -259,7 +278,7 @@ void jogar(void)
             if (vida < 0)
                 vida = 0;
 
-            printf("DESIDRATACAO! Voce perdeu 3 de vida.\n");
+            printf(COR_VERMELHO COR_NEGRITO "DESIDRATACAO!" COR_RESET " Voce perdeu 3 de vida.\n");
         }
 
         dia++;
@@ -269,10 +288,10 @@ void jogar(void)
 
     if (vida > 0 && chegouAoDestino())
     {
-        printf("\nPARABENS! Voce chegou ao destino com vida!\n");
+        printf("\n" COR_NEGRITO COR_VERDE "PARABENS! Voce chegou ao destino com vida!" COR_RESET "\n");
     }
     else
     {
-        printf("\nFIM DE JOGO: o sertao foi implacavel...\n");
+        printf("\n" COR_NEGRITO COR_VERMELHO "FIM DE JOGO: o sertao foi implacavel..." COR_RESET "\n");
     }
 }
