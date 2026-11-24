@@ -238,21 +238,27 @@ void jogar(void)
             printf("Voce descansou. Vida atual: %d/10\n", vida);
         }
         else if (op == 3)
-        {
-            if (consultarRapadura() <= 0)
-            {
-                printf("A rapadura acabou!\n");
-                continue;
-            }
+{
+    if (vida >= 10)
+    {
+        printf("Sua vida ja esta cheia!\n");
+        continue;
+    }
 
-            alterarRapadura(-1);
-            vida += 4;
+    if (consultarRapadura() <= 0)
+    {
+        printf("A rapadura acabou!\n");
+        continue;
+    }
 
-            if (vida > 10)
-                vida = 10;
+    alterarRapadura(-1);
+    vida += 4;
 
-            printf("Voce comeu rapadura. Vida atual: %d/10\n", vida);
-        }
+    if (vida > 10)
+        vida = 10;
+
+    printf("Voce comeu rapadura. Vida atual: %d/10\n", vida);
+}
         else if (op == 4)
         {
             /* Ver o inventario nao gasta agua nem avanca o dia. */
