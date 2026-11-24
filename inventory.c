@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "ui.h"
 #include <limits.h> /* Define INT_MAX, o maior valor do tipo int. */
 
 /* Quantidade de cada item no inventario do jogador. */
@@ -98,16 +99,21 @@ int alterarFarinha(int quantidade) {
     return 1;
 }
 
-/* Mostra a quantidade atual de todos os itens. */
+/* Mostra a quantidade atual de cada item, com o efeito de uso. */
 void mostrarInventario(void) {
-    printf("\n===== INVENTARIO =====\n");
+    printf("\n" COR_NEGRITO COR_AMARELO "INVENTARIO" COR_RESET "\n");
+    mostrarSeparador();
 
-    printf("Agua: %d\n", agua);
-    printf("Rapadura: %d\n", rapadura);
-    printf("Remedio: %d\n", remedio);
-    printf("Farinha: %d\n", farinha);
+    printf(COR_CIANO "Agua     " COR_RESET ": %d\n", agua);
+    printf(COR_AMARELO "Rapadura " COR_RESET ": %d  (cura 4 de vida)\n", rapadura);
+    printf(COR_VERDE "Remedio  " COR_RESET ": %d  (usado em combate, cura 3)\n", remedio);
 
-    printf("======================\n");
+    /* A farinha so aparece quando o jogador tem alguma. */
+    if (farinha > 0) {
+        printf("Farinha   : %d\n", farinha);
+    }
+
+    mostrarSeparador();
 }
 
 /* Consultam o estoque sem alterar as quantidades. */

@@ -2,6 +2,7 @@
 #define UI_H
 
 #include <stdio.h>
+#include <string.h>
 
 /* Codigos ANSI de cor e estilo para o terminal. */
 #define COR_RESET    "\033[0m"
@@ -44,6 +45,54 @@ static inline void mostrarBarra(int atual, int maximo, int largura, const char *
 static inline void mostrarSeparador(void)
 {
     printf(COR_DIM "------------------------------------------" COR_RESET "\n");
+}
+
+/*
+ * Mostra um campo de digitacao com moldura amarela.
+ * O cursor fica dentro da moldura, logo apos o rotulo.
+ */
+static inline void mostrarPrompt(const char *rotulo)
+{
+    int colunas = (int)strlen(rotulo) + 1; /* "rotulo " */
+
+    printf(COR_AMARELO COR_NEGRITO "==============================\n" COR_RESET);
+    printf(COR_AMARELO COR_NEGRITO "%s " COR_RESET "\n", rotulo);
+    printf(COR_AMARELO COR_NEGRITO "==============================" COR_RESET "\n");
+
+    /* Sobe para a linha do rotulo e posiciona o cursor depois dele. */
+    printf("\033[2A\033[%dC", colunas);
+    fflush(stdout);
+}
+
+/*
+ * Mostra um texto em destaque, emoldurado pelas linhas amarelas.
+ * A moldura acompanha o tamanho do texto, com no minimo 30 colunas.
+ */
+static inline void mostrarBanner(const char *cor, const char *texto)
+{
+    int largura = (int)strlen(texto);
+
+    if (largura < 30)
+    {
+        largura = 30;
+    }
+
+    printf(COR_AMARELO COR_NEGRITO);
+
+    for (int i = 0; i < largura; i++)
+    {
+        putchar('=');
+    }
+
+    printf(COR_RESET "\n%s%s" COR_RESET "\n", cor, texto);
+    printf(COR_AMARELO COR_NEGRITO);
+
+    for (int i = 0; i < largura; i++)
+    {
+        putchar('=');
+    }
+
+    printf(COR_RESET "\n");
 }
 
 #endif

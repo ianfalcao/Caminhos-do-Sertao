@@ -15,19 +15,20 @@ void limparTela(void)
 void mostrarMenu(void)
 {
     printf("\n" COR_AMARELO COR_NEGRITO);
-    printf("  ============================\n");
-    printf("     CAMINHOS DO SERTAO\n");
-    printf("  ============================\n" COR_RESET);
-    printf("  " COR_VERDE "1" COR_RESET " - Novo Jogo\n");
-    printf("  " COR_CIANO "2" COR_RESET " - Como Jogar\n");
-    printf("  " COR_VERMELHO "3" COR_RESET " - Sair\n");
-    printf("\nEscolha: ");
+    printf("==============================\n");
+    printf("CAMINHOS DO SERTAO\n");
+    printf("==============================\n" COR_RESET);
+    printf(COR_VERDE "1" COR_RESET " - Novo Jogo\n");
+    printf(COR_CIANO "2" COR_RESET " - Como Jogar\n");
+    printf(COR_VERMELHO "3" COR_RESET " - Sair\n");
+    mostrarPrompt("Escolha:");
 }
 
 /* Funcao explicativa de como jogar */
 void comoJogar(void)
 {
-    printf("\n" COR_NEGRITO COR_AMARELO "--- COMO JOGAR ---" COR_RESET "\n");
+    printf("\n");
+    mostrarBanner(COR_NEGRITO COR_AMARELO, "COMO JOGAR");
     printf("- Explore o mapa ate chegar ao destino D.\n");
     printf("- Ande com W (norte), S (sul), D (leste) ou A (oeste).\n");
     printf("- Ou escolha 1 para explorar e depois a direcao.\n");
@@ -37,6 +38,7 @@ void comoJogar(void)
     printf("- Descansar recupera vida e gasta agua.\n");
     printf("- Comer rapadura recupera ate 4 de vida.\n");
     printf("- Ficar sem agua causa 3 de dano ao final da acao.\n");
+    printf("- Tecle I para ver o inventario.\n");
     printf("- Chegue ao destino com vida para vencer.\n");
 }
 

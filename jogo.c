@@ -4,29 +4,17 @@
 #include "ui.h"
 #include "jogo.h"
 
+
 /* Converte W/A/S/D (ou 1 a 4) na direcao usada por moverJogador. Retorna 0 se nao for valida. */
 static int direcaoDeTecla(char tecla)
 {
     switch (tecla)
     {
-    case '1':
-    case 'w':
-    case 'W':
-        return 1;
-    case '2':
-    case 's':
-    case 'S':
-        return 2;
-    case '3':
-    case 'd':
-    case 'D':
-        return 3;
-    case '4':
-    case 'a':
-    case 'A':
-        return 4;
-    default:
-        return 0;
+        case '1': case 'w': case 'W': return 1;
+        case '2': case 's': case 'S': return 2;
+        case '3': case 'd': case 'D': return 3;
+        case '4': case 'a': case 'A': return 4;
+        default: return 0;
     }
 }
 
@@ -81,9 +69,8 @@ void jogar(void)
         printf("2 - Descansar na sombra\n");
         printf("3 - Comer rapadura\n");
         printf("W/A/S/D - Andar direto\n");
-        printf("\n" COR_AMARELO COR_NEGRITO);
-        printf("============================\n");
-        printf(" Escolha: \n"COR_RESET);
+        printf("I - Inventario\n");
+        mostrarPrompt("Escolha:");
 
         /* Le um caractere, ignorando espacos e quebras de linha. */
         int leitura = scanf(" %c", &tecla);
@@ -105,6 +92,10 @@ void jogar(void)
         {
             op = tecla - '0';
         }
+        else if (tecla == 'i' || tecla == 'I')
+        {
+            op = 4;
+        }
         else
         {
             op = 0;
@@ -122,7 +113,8 @@ void jogar(void)
             if (direcaoRapida == 0)
             {
                 printf("\n1 (W) - Norte\n2 (S) - Sul\n");
-                printf("3 (D) - Leste\n4 (A) - Oeste\nDirecao: ");
+                printf("3 (D) - Leste\n4 (A) - Oeste\n");
+                mostrarPrompt("Direcao:");
 
                 leitura = scanf(" %c", &tecla);
 
@@ -179,7 +171,7 @@ void jogar(void)
                      */
                     if (rand() % 100 < 30)
                     {
-                        printf("Um salteador apareceu na estrada!\n");
+                        printf(COR_VERMELHO COR_NEGRITO "Um salteador apareceu na estrada!" COR_RESET "\n");
                         iniciarCombate(&vida);
 
                         if (vida <= 0)
@@ -189,19 +181,19 @@ void jogar(void)
                     }
                     else
                     {
-                        printf("Voce segue por uma estrada tranquila.\n");
+                        printf(COR_DIM "Voce segue por uma estrada tranquila." COR_RESET "\n");
                     }
                 }
                 else if (local == 1)
                 {
                     if (alterarAgua(5))
                     {
-                        printf("Voce encontrou um poco! (+5 agua)\n");
+                        printf(COR_CIANO "Voce encontrou um poco! (+5 agua)" COR_RESET "\n");
                     }
                 }
                 else if (local == 2)
                 {
-                    printf("Voce encontrou um armazem abandonado!\n");
+                    printf(COR_AMARELO COR_NEGRITO "Voce encontrou um armazem abandonado!" COR_RESET "\n");
 
                     if (alterarRapadura(1))
                         printf("Encontrou 1 rapadura!\n");
@@ -211,7 +203,7 @@ void jogar(void)
                 }
                 else if (local == 3)
                 {
-                    printf("Uma emboscada no caminho!\n");
+                    printf(COR_VERMELHO COR_NEGRITO "Uma emboscada no caminho!" COR_RESET "\n");
                     iniciarCombate(&vida);
 
                     /* Encerra a jornada imediatamente se morrer. */
@@ -220,12 +212,12 @@ void jogar(void)
                 }
                 else if (local == 4)
                 {
-                    printf("Voce encontrou a chegada!\n");
+                    printf(COR_VERDE COR_NEGRITO "Voce encontrou a chegada!" COR_RESET "\n");
                 }
             }
             else
             {
-                printf("Voce voltou a um local ja explorado.\n");
+                printf(COR_DIM "Voce voltou a um local ja explorado." COR_RESET "\n");
             }
         }
         else if (op == 2)
@@ -261,6 +253,12 @@ void jogar(void)
 
             printf("Voce comeu rapadura. Vida atual: %d/10\n", vida);
         }
+        else if (op == 4)
+        {
+            /* Ver o inventario nao gasta agua nem avanca o dia. */
+            mostrarInventario();
+            continue;
+        }
         else
         {
             printf("Opcao invalida!\n");
@@ -288,10 +286,12 @@ void jogar(void)
 
     if (vida > 0 && chegouAoDestino())
     {
-        printf("\n" COR_NEGRITO COR_VERDE "PARABENS! Voce chegou ao destino com vida!" COR_RESET "\n");
+        printf("\n");
+        mostrarBanner(COR_NEGRITO COR_VERDE, "PARABENS! Voce chegou ao destino com vida!");
     }
     else
     {
-        printf("\n" COR_NEGRITO COR_VERMELHO "FIM DE JOGO: o sertao foi implacavel..." COR_RESET "\n");
+        printf("\n");
+        mostrarBanner(COR_NEGRITO COR_VERMELHO, "FIM DE JOGO: o sertao foi implacavel...");
     }
 }

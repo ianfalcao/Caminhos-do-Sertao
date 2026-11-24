@@ -21,7 +21,8 @@ void iniciarCombate(int *vidaJogador)
         printf("Salteador: ");
         mostrarBarra(vidaInimigo, 5, 10, COR_VERMELHO);
         printf(" %d/5\n", vidaInimigo);
-        printf("1 - Atacar\n2 - Usar remedio\n3 - Fugir\nEscolha: ");
+        printf("1 - Atacar\n2 - Usar remedio\n3 - Fugir\n");
+        mostrarPrompt("Escolha:");
 
         int leitura = scanf("%d", &opcao);
 

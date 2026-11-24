@@ -88,7 +88,27 @@ void mostrarMapa(void)
             else if (visitado[linha][coluna])
             {
             /* Mostra que o local ja foi explorado. */
-                simbolo = '.';
+                /* Locais visitados mostram o tipo ja conhecido. */
+                if (mapa[linha][coluna] == 1)
+                {
+                    simbolo = 'P';
+                }
+                else if (mapa[linha][coluna] == 2)
+                {
+                    simbolo = 'A';
+                }
+                else if (mapa[linha][coluna] == 3)
+                {
+                    simbolo = 'E';
+                }
+                else if (mapa[linha][coluna] == 4)
+                {
+                    simbolo = 'D';
+                }
+                else
+                {
+                    simbolo = '.';
+                }
             }
             else if (mapa[linha][coluna] == 4)
             {
@@ -110,7 +130,19 @@ void mostrarMapa(void)
             }
             else if (simbolo == 'D')
             {
-                cor = COR_NEGRITO COR_VERMELHO;
+                cor = COR_NEGRITO COR_VERDE;
+            }
+            else if (simbolo == 'P')
+            {
+                cor = COR_CIANO;
+            }
+            else if (simbolo == 'A')
+            {
+                cor = COR_AMARELO;
+            }
+            else if (simbolo == 'E')
+            {
+                cor = COR_VERMELHO;
             }
 
             printf("[%s%c" COR_RESET "] ", cor, simbolo);
@@ -119,8 +151,9 @@ void mostrarMapa(void)
         printf("\n");
     }
 
-    printf(COR_AMARELO "J" COR_RESET " = jogador | " COR_VERMELHO "D" COR_RESET " = destino\n");
-    printf(COR_DIM ". = explorado | ? = desconhecido" COR_RESET "\n");
+    printf(COR_AMARELO "J" COR_RESET " = jogador | " COR_VERDE "D" COR_RESET " = destino\n");
+    printf(COR_DIM ". = estrada | ? = desconhecido" COR_RESET "\n");
+    printf(COR_CIANO "P" COR_RESET " = poco | " COR_AMARELO "A" COR_RESET " = armazem | " COR_VERMELHO "E" COR_RESET " = emboscada\n");
 }
 
 /* 1 = norte, 2 = sul, 3 = leste, 4 = oeste.
