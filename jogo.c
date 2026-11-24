@@ -4,25 +4,49 @@
 #include "ui.h"
 #include "jogo.h"
 
-
 /* Converte W/A/S/D (ou 1 a 4) na direcao usada por moverJogador. Retorna 0 se nao for valida. */
 static int direcaoDeTecla(char tecla)
 {
     switch (tecla)
     {
-        case '1': case 'w': case 'W': return 1;
-        case '2': case 's': case 'S': return 2;
-        case '3': case 'd': case 'D': return 3;
-        case '4': case 'a': case 'A': return 4;
-        default: return 0;
+    case '1':
+    case 'w':
+    case 'W':
+        return 1;
+    case '2':
+    case 's':
+    case 'S':
+        return 2;
+    case '3':
+    case 'd':
+    case 'D':
+        return 3;
+    case '4':
+    case 'a':
+    case 'A':
+        return 4;
+    default:
+        return 0;
     }
 }
 
+/* Sorteia o clima do dia: 60% ameno, 25% sol forte e 15% seca severa. */
+static int sortearClima(void)
+{
+    int sorteio = rand() % 100;
+
+    if (sorteio < 60)
+        return 0;
+    if (sorteio < 85)
+        return 1;
+    return 2;
+}
 void jogar(void)
 {
     int dia = 1;
     int vida = 10;
     int op;
+    int clima = sortearClima();
 
     /* Cada partida comeca com inventario e mapa reiniciados. */
     inicializarInventario();
@@ -33,16 +57,7 @@ void jogar(void)
     /* A jornada termina ao chegar ao destino ou perder toda a vida. */
     while (!chegouAoDestino() && vida > 0)
     {
-        /* Sorteia o clima: 60% ameno, 25% sol e 15% seca. */
-        int sorteio = rand() % 100;
-        int clima;
-
-        if (sorteio < 60)
-            clima = 0;
-        else if (sorteio < 85)
-            clima = 1;
-        else
-            clima = 2;
+        /* O clima permanece igual enquanto o dia nao avanca. */
 
         mostrarMapa();
 
@@ -238,27 +253,27 @@ void jogar(void)
             printf("Voce descansou. Vida atual: %d/10\n", vida);
         }
         else if (op == 3)
-{
-    if (vida >= 10)
-    {
-        printf("Sua vida ja esta cheia!\n");
-        continue;
-    }
+        {
+            if (vida >= 10)
+            {
+                printf("Sua vida ja esta cheia!\n");
+                continue;
+            }
 
-    if (consultarRapadura() <= 0)
-    {
-        printf("A rapadura acabou!\n");
-        continue;
-    }
+            if (consultarRapadura() <= 0)
+            {
+                printf("A rapadura acabou!\n");
+                continue;
+            }
 
-    alterarRapadura(-1);
-    vida += 4;
+            alterarRapadura(-1);
+            vida += 4;
 
-    if (vida > 10)
-        vida = 10;
+            if (vida > 10)
+                vida = 10;
 
-    printf("Voce comeu rapadura. Vida atual: %d/10\n", vida);
-}
+            printf("Voce comeu rapadura. Vida atual: %d/10\n", vida);
+        }
         else if (op == 4)
         {
             /* Ver o inventario nao gasta agua nem avanca o dia. */
@@ -285,7 +300,9 @@ void jogar(void)
             printf(COR_VERMELHO COR_NEGRITO "DESIDRATACAO!" COR_RESET " Voce perdeu 3 de vida.\n");
         }
 
+        /* Avanca o dia e sorteia o clima do novo dia. */
         dia++;
+        clima = sortearClima();
     }
 
     mostrarMapa();
