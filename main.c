@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "ui.h"
+#include "jogo.h"
 
 /* Limpa a tela e posiciona o cursor no inicio. */
 void limparTela(void)
@@ -9,47 +11,36 @@ void limparTela(void)
     fflush(stdout);
 }
 
-/* Funcoes disponiveis nos outros arquivos do projeto. */
-void inicializarMapa(void);
-void mostrarMapa(void);
-int moverJogador(int direcao);
-int consultarLocalAtual(void);
-int localAtualFoiVisitado(void);
-void marcarLocalAtualVisitado(void);
-int chegouAoDestino(void);
-
-int alterarRemedio(int quantidade);
-void inicializarInventario(void);
-void iniciarCombate(int *vidaJogador);
-int alterarAgua(int quantidade);
-int alterarRapadura(int quantidade);
-int consultarAgua(void);
-int consultarRapadura(void);
-
 /* Funcao para mostrar o Menu do game */
 void mostrarMenu(void)
 {
-    printf("\n=== CAMINHOS DO SERTAO ===\n");
-    printf("1 - Novo Jogo\n2 - Como Jogar\n3 - Sair\nEscolha: ");
+    printf("\n" COR_AMARELO COR_NEGRITO);
+    printf("==============================\n");
+    printf("CAMINHOS DO SERTAO\n");
+    printf("==============================\n" COR_RESET);
+    printf(COR_VERDE "1" COR_RESET " - Novo Jogo\n");
+    printf(COR_CIANO "2" COR_RESET " - Como Jogar\n");
+    printf(COR_VERMELHO "3" COR_RESET " - Sair\n");
+    mostrarPrompt("Escolha:");
 }
 
 /* Funcao explicativa de como jogar */
 void comoJogar(void)
 {
-    printf("\n--- COMO JOGAR ---\n");
+    printf("\n");
+    mostrarBanner(COR_NEGRITO COR_AMARELO, "COMO JOGAR");
     printf("- Explore o mapa ate chegar ao destino D.\n");
-    printf("- Escolha norte, sul, leste ou oeste para se mover.\n");
+    printf("- Ande com W (norte), S (sul), D (leste) ou A (oeste).\n");
+    printf("- Ou escolha 1 para explorar e depois a direcao.\n");
     printf("- Cada movimento valido gasta agua conforme o clima.\n");
     printf("- Pocos e armazens fornecem recursos na primeira visita.\n");
     printf("- Emboscadas iniciam combates na primeira visita.\n");
     printf("- Descansar recupera vida e gasta agua.\n");
     printf("- Comer rapadura recupera ate 4 de vida.\n");
     printf("- Ficar sem agua causa 3 de dano ao final da acao.\n");
+    printf("- Tecle I para ver o inventario.\n");
     printf("- Chegue ao destino com vida para vencer.\n");
 }
-
-/* Declara a funcao de jogo, implementada em jogo.c. */
-void jogar(void);
 
 int main(void)
 {
@@ -94,10 +85,10 @@ int main(void)
             comoJogar();
             break;
         case 3:
-            printf("\nAte logo!\n");
+            printf("\n" COR_DIM "Ate logo!" COR_RESET "\n");
             break;
         default:
-            printf("\nOpcao invalida!\n");
+            printf("\n" COR_VERMELHO "Opcao invalida!" COR_RESET "\n");
         }
 
     } while (opcao != 3); /* Repete o menu ate escolher sair. */
