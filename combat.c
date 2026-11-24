@@ -9,7 +9,7 @@ void iniciarCombate(int *vidaJogador)
     int vidaInimigo = 5;
     int opcao;
 
-    printf("\nUm salteador bloqueia sua passagem!\n");
+    printf("\nA Cabra Cabriola surgiu e bloqueou sua passagem!\n");
 
     /* O combate continua enquanto os dois estiverem vivos. */
     while (*vidaJogador > 0 && vidaInimigo > 0)
@@ -18,7 +18,7 @@ void iniciarCombate(int *vidaJogador)
         printf("Voce:      ");
         mostrarBarra(*vidaJogador, 10, 10, COR_VERDE);
         printf(" %d/10\n", *vidaJogador);
-        printf("Salteador: ");
+        printf("Cabriola: ");
         mostrarBarra(vidaInimigo, 5, 10, COR_VERMELHO);
         printf(" %d/5\n", vidaInimigo);
         printf("1 - Atacar\n2 - Usar remedio\n3 - Fugir\n");
@@ -96,7 +96,7 @@ void iniciarCombate(int *vidaJogador)
                 return;
             }
 
-            printf("Voce tentou fugir, mas o salteador te alcancou!\n");
+            printf("Voce tentou fugir, mas a Cabra Cabriola te alcancou!\n");
         }
         else
         {
@@ -115,18 +115,18 @@ void iniciarCombate(int *vidaJogador)
                 *vidaJogador = 0;
             }
 
-            printf(COR_VERMELHO "O salteador causou %d de dano!" COR_RESET "\n", dano);
+            printf(COR_VERMELHO "A Cabra Cabriola causou %d de dano!" COR_RESET "\n", dano);
         }
     }
 
     /* A derrota encerra a funcao antes do sorteio de recompensa. */
     if (*vidaJogador <= 0)
     {
-        printf("\n" COR_NEGRITO COR_VERMELHO "Voce foi derrotado pelo salteador." COR_RESET "\n");
+        printf("\n" COR_NEGRITO COR_VERMELHO "Voce foi derrotado pela Cabra Cabriola.." COR_RESET "\n");
         return;
     }
 
-    printf("\n" COR_NEGRITO COR_VERDE "Voce derrotou o salteador!" COR_RESET "\n");
+    printf("\n" COR_NEGRITO COR_VERDE "Voce derrotou a Cabra Cabriola!" COR_RESET "\n");
 
     /* Sorteia entre agua, rapadura e remedio. */
     int recompensa = rand() % 3;

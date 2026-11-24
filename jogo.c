@@ -186,7 +186,7 @@ void jogar(void)
                      */
                     if (rand() % 100 < 30)
                     {
-                        printf(COR_VERMELHO COR_NEGRITO "Um salteador apareceu na estrada!" COR_RESET "\n");
+                        printf(COR_VERMELHO COR_NEGRITO "A Cabra Cabriola apareceu na estrada!" COR_RESET "\n");
                         iniciarCombate(&vida);
 
                         if (vida <= 0)
