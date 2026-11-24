@@ -243,3 +243,30 @@ int chegouAoDestino(void)
 {
     return mapa[linhaJogador][colunaJogador] == 4;
 }
+
+void obterEstadoMapa(int *linha, int *coluna, int visitados[5][5])
+{
+    *linha = linhaJogador;
+    *coluna = colunaJogador;
+    for (int i = 0; i < 5; i++)
+        for (int j = 0; j < 5; j++)
+            visitados[i][j] = visitado[i][j];
+}
+
+int definirEstadoMapa(int linha, int coluna, int visitados[5][5])
+{
+    if (linha < 0 || linha >= 5 || coluna < 0 || coluna >= 5)
+        return 0;
+    for (int i = 0; i < 5; i++)
+        for (int j = 0; j < 5; j++)
+            if (visitados[i][j] != 0 && visitados[i][j] != 1)
+                return 0;
+
+    linhaJogador = linha;
+    colunaJogador = coluna;
+    for (int i = 0; i < 5; i++)
+        for (int j = 0; j < 5; j++)
+            visitado[i][j] = visitados[i][j];
+    visitado[linha][coluna] = 1;
+    return 1;
+}

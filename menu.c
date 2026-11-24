@@ -10,8 +10,9 @@ void mostrarMenu(void)
     printf("CAMINHOS DO SERTAO\n");
     printf("==============================\n" COR_RESET);
     printf(COR_VERDE "1" COR_RESET " - Novo Jogo\n");
-    printf(COR_CIANO "2" COR_RESET " - Como Jogar\n");
-    printf(COR_VERMELHO "3" COR_RESET " - Sair\n");
+    printf(COR_CIANO "2" COR_RESET " - Continuar Jogo Salvo\n");
+    printf(COR_CIANO "3" COR_RESET " - Como Jogar\n");
+    printf(COR_VERMELHO "4" COR_RESET " - Sair\n");
     mostrarPrompt("Escolha:");
 }
 
@@ -73,10 +74,14 @@ void executarMenu(void)
             break;
 
         case 2:
-            comoJogar();
+            continuarJogo();
             break;
 
         case 3:
+            comoJogar();
+            break;
+
+        case 4:
             printf("\n" COR_DIM "Ate logo!" COR_RESET "\n");
             break;
 
@@ -84,5 +89,5 @@ void executarMenu(void)
             printf("\n" COR_VERMELHO "Opcao invalida!" COR_RESET "\n");
         }
 
-    } while (opcao != 3);
+    } while (opcao != 4);
 }

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 #include "ui.h"
 #include "jogo.h"
 
@@ -41,16 +42,72 @@ static int sortearClima(void)
         return 1;
     return 2;
 }
-void jogar(void)
+static int salvarProgresso(int dia, int vida, int clima)
+{
+    FILE *arquivo = fopen("savegame.txt", "w");
+    if (!arquivo) return 0;
+
+    int linha, coluna, visitados[5][5];
+    obterEstadoMapa(&linha, &coluna, visitados);
+    int ok = fprintf(arquivo, "CAMINHOS_SERTAO 1\n%d %d %d %d %d %d %d %d\n",
+        dia, vida, clima, linha, coluna, consultarAgua(), consultarRapadura(), consultarRemedio()) > 0;
+    if (ok) ok = fprintf(arquivo, "%d\n", consultarFarinha()) > 0;
+    for (int i = 0; ok && i < 5; i++)
+        ok = fprintf(arquivo, "%d %d %d %d %d\n", visitados[i][0], visitados[i][1], visitados[i][2], visitados[i][3], visitados[i][4]) > 0;
+
+    if (fclose(arquivo) != 0) ok = 0;
+    return ok;
+}
+
+static int lerProgresso(int *dia, int *vida, int *clima)
+{
+    FILE *arquivo = fopen("savegame.txt", "r");
+    char cabecalho[32];
+    int versao, linha, coluna, agua, rapadura, remedio, farinha;
+    int visitados[5][5];
+    if (!arquivo) return 0;
+
+    int valido = fscanf(arquivo, "%31s %d", cabecalho, &versao) == 2 &&
+        strcmp(cabecalho, "CAMINHOS_SERTAO") == 0 && versao == 1 &&
+        fscanf(arquivo, "%d %d %d %d %d %d %d %d", dia, vida, clima,
+               &linha, &coluna, &agua, &rapadura, &remedio) == 8 &&
+        fscanf(arquivo, "%d", &farinha) == 1;
+    for (int i = 0; valido && i < 5; i++)
+        for (int j = 0; valido && j < 5; j++)
+            valido = fscanf(arquivo, "%d", &visitados[i][j]) == 1;
+
+    fclose(arquivo);
+    if (!valido || *dia < 1 || *vida < 1 || *vida > 10 || *clima < 0 || *clima > 2 ||
+        agua < 0 || rapadura < 0 || remedio < 0 || farinha < 0 ||
+        !definirEstadoMapa(linha, coluna, visitados)) return 0;
+
+    definirInventario(agua, rapadura, remedio, farinha);
+    return 1;
+}
+
+static void jogarInterno(int carregar)
 {
     int dia = 1;
     int vida = 10;
     int op;
     int clima = sortearClima();
 
-    /* Cada partida comeca com inventario e mapa reiniciados. */
-    inicializarInventario();
-    inicializarMapa();
+    if (carregar && lerProgresso(&dia, &vida, &clima))
+        printf("Progresso carregado do savegame.txt.\\n");
+    else
+    {
+        if (carregar) printf("Nao foi possivel carregar o progresso. Iniciando nova jornada.\\n");
+        dia = 1;
+        vida = 10;
+        clima = sortearClima();
+        inicializarInventario();
+        inicializarMapa();
+    }
+
+    if (!carregar)
+        remove("savegame.txt");
+    if (!salvarProgresso(dia, vida, clima))
+        printf("Aviso: nao foi possivel salvar em savegame.txt.\\n");
 
     printf("\nEncontre o destino no mapa para cruzar o sertao!\n");
 
@@ -303,6 +360,8 @@ void jogar(void)
         /* Avanca o dia e sorteia o clima do novo dia. */
         dia++;
         clima = sortearClima();
+        if (vida > 0 && !chegouAoDestino() && !salvarProgresso(dia, vida, clima))
+            printf("Aviso: nao foi possivel salvar em savegame.txt.\\n");
     }
 
     mostrarMapa();
@@ -317,4 +376,9 @@ void jogar(void)
         printf("\n");
         mostrarBanner(COR_NEGRITO COR_VERMELHO, "FIM DE JOGO: o sertao foi implacavel...");
     }
+    remove("savegame.txt");
 }
+
+void jogar(void) { jogarInterno(0); }
+
+void continuarJogo(void) { jogarInterno(1); }

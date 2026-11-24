@@ -133,6 +133,13 @@ int consultarFarinha(void) {
     return farinha;
 }
 
+void definirInventario(int novaAgua, int novaRapadura, int novoRemedio, int novaFarinha) {
+    agua = novaAgua;
+    rapadura = novaRapadura;
+    remedio = novoRemedio;
+    farinha = novaFarinha;
+}
+
 /*
  * As funcoes consumir removem uma unidade se houver estoque.
  * Retornam 1 se o item foi consumido e 0 se estiver em falta.
